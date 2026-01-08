@@ -1,0 +1,45 @@
+================================
+QUICK START - STRUKTUR ANGGARAN
+================================
+
+INSTALASI:
+
+1. Backend:
+   cd backend
+   npm install
+   npm run start:dev
+
+2. Frontend (terminal baru):
+   cd frontend
+   npm install
+   npm run dev
+
+3. Akses: http://localhost:3000
+   Login: superadmin / admin123
+
+================================
+
+CATATAN PENTING:
+- Pastikan MongoDB berjalan di localhost:27017
+- Backend berjalan di port 3001
+- Frontend berjalan di port 3000
+- Superadmin otomatis dibuat saat pertama kali backend dijalankan
+
+================================
+
+FITUR:
+✓ Login & Authentication
+✓ Dashboard dengan Statistik
+✓ Kelola Struktur Anggaran
+✓ Kelola User (Superadmin only)
+✓ Log Aktivitas
+✓ Integrasi Data Satker dari Parquet API
+✓ Responsive Design
+
+================================
+
+ROLE:
+- Superadmin: Full access + kelola user
+- Admin: Kelola data struktur anggaran
+
+================================

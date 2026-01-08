@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node --version:*)",
+      "Bash(cat:*)",
+      "Bash(curl:*)",
+      "Bash(mongosh struktur-anggaran:*)"
+    ]
+  }
+}
