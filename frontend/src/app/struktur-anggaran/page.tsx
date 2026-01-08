@@ -65,6 +65,9 @@ export default function StrukturAnggaranPage() {
 
   useEffect(() => {
     if (showModal && !editingId) {
+      // Reset satker list when year changes
+      setSatkerList([]);
+      setSearchTerm('');
       fetchSatkerData();
     }
   }, [showModal, formData.tahun_anggaran]);
@@ -349,7 +352,7 @@ export default function StrukturAnggaranPage() {
                         required
                         disabled={editingId !== null}
                       >
-                        {Array.from({ length: 5 }, (_, i) => new Date().getFullYear() - i).map((year) => (
+                        {Array.from({ length: 3 }, (_, i) => new Date().getFullYear() - (2 - i)).map((year) => (
                           <option key={year} value={year}>
                             {year}
                           </option>
