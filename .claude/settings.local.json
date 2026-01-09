@@ -4,7 +4,8 @@
       "Bash(node --version:*)",
       "Bash(cat:*)",
       "Bash(curl:*)",
-      "Bash(mongosh struktur-anggaran:*)"
+      "Bash(mongosh struktur-anggaran:*)",
+      "Bash(npm install:*)"
     ]
   }
 }

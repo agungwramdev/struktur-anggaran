@@ -10,6 +10,7 @@ import {
   UseGuards,
   Request,
 } from '@nestjs/common';
+import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth, ApiQuery } from '@nestjs/swagger';
 import { StrukturAnggaranService } from './struktur-anggaran.service';
 import { CreateStrukturAnggaranDto } from '../dto/create-struktur-anggaran.dto';
 import { UpdateStrukturAnggaranDto } from '../dto/update-struktur-anggaran.dto';
@@ -17,6 +18,8 @@ import { JwtAuthGuard } from '../auth/jwt-auth.guard';
 import { RolesGuard } from '../auth/roles.guard';
 import { Roles } from '../auth/roles.decorator';
 
+@ApiTags('struktur-anggaran')
+@ApiBearerAuth('JWT-auth')
 @Controller('struktur-anggaran')
 @UseGuards(JwtAuthGuard, RolesGuard)
 export class StrukturAnggaranController {
@@ -24,12 +27,19 @@ export class StrukturAnggaranController {
 
   @Post()
   @Roles('admin', 'superadmin')
+  @ApiOperation({ summary: 'Create new struktur anggaran' })
+  @ApiResponse({ status: 201, description: 'Struktur anggaran created successfully' })
+  @ApiResponse({ status: 400, description: 'Bad request' })
+  @ApiResponse({ status: 401, description: 'Unauthorized' })
   create(@Body() createStrukturAnggaranDto: CreateStrukturAnggaranDto, @Request() req) {
     return this.strukturAnggaranService.create(createStrukturAnggaranDto, req.user.userId);
   }
 
   @Get()
   @Roles('admin', 'superadmin')
+  @ApiOperation({ summary: 'Get all struktur anggaran' })
+  @ApiQuery({ name: 'tahun', required: false, description: 'Filter by year' })
+  @ApiResponse({ status: 200, description: 'Returns all struktur anggaran' })
   findAll(@Query('tahun') tahun?: string) {
     if (tahun) {
       return this.strukturAnggaranService.findByTahun(parseInt(tahun));
@@ -39,6 +49,9 @@ export class StrukturAnggaranController {
 
   @Get('statistics')
   @Roles('admin', 'superadmin')
+  @ApiOperation({ summary: 'Get budget statistics' })
+  @ApiQuery({ name: 'tahun', required: false, description: 'Filter by year' })
+  @ApiResponse({ status: 200, description: 'Returns budget statistics' })
   getStatistics(@Query('tahun') tahun?: string) {
     if (tahun) {
       return this.strukturAnggaranService.getStatistics(parseInt(tahun));
