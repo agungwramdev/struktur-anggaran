@@ -1,72 +1,123 @@
-# Aplikasi Struktur Anggaran 2026
+# Struktur Anggaran 2026
 
-Aplikasi pengelolaan struktur anggaran berbasis web dengan Next.js (Frontend) dan NestJS (Backend).
+Aplikasi manajemen Struktur Anggaran untuk Pemerintah Kota menggunakan Next.js dan NestJS.
 
-## Fitur Utama
+## 📋 Daftar Isi
 
-- **Autentikasi & Autorisasi**: Login dengan role Admin dan Superadmin
-- **Dashboard**: Statistik dan visualisasi data struktur anggaran
-- **Manajemen Struktur Anggaran**: CRUD data struktur anggaran dengan integrasi data Satker dari API Parquet
-- **Manajemen User**: Kelola akun pengguna (khusus Superadmin)
-- **Log Aktivitas**: Tracking semua aktivitas pengguna
-- **Responsive Design**: Tampilan yang bagus di semua perangkat
+- [Fitur](#fitur)
+- [Teknologi](#teknologi)
+- [Prasyarat](#prasyarat)
+- [Instalasi](#instalasi)
+- [Konfigurasi](#konfigurasi)
+- [Menjalankan Aplikasi](#menjalankan-aplikasi)
+- [API Documentation](#api-documentation)
+- [User Roles](#user-roles)
+- [Project Structure](#project-structure)
+- [Deployment](#deployment)
 
-## Teknologi yang Digunakan
+---
+
+## ✨ Fitur
+
+- ✅ **Authentication & Authorization** dengan JWT
+- ✅ **Role-based Access Control** (Superadmin & Admin)
+- ✅ **CRUD Struktur Anggaran** dengan format Rupiah
+- ✅ **Integrasi API Satker** dari data.pbj.my.id
+- ✅ **Activity Logs** dengan permission berdasarkan role
+- ✅ **Dashboard Statistics** dengan visualisasi data
+- ✅ **User Management** untuk Superadmin
+- ✅ **Responsive Design** dengan Tailwind CSS
+- ✅ **API Documentation** dengan Swagger UI
+
+---
+
+## 🛠️ Teknologi
 
 ### Backend
-- NestJS 10.x
-- MongoDB dengan Mongoose
-- JWT Authentication
-- bcrypt untuk password hashing
-- Parquet.js untuk parsing data parquet
+- **NestJS** 10.x - Progressive Node.js framework
+- **MongoDB** - NoSQL database
+- **Mongoose** - MongoDB ODM
+- **JWT** - JSON Web Token untuk authentication
+- **Passport.js** - Authentication middleware
+- **Swagger** - API documentation
+- **bcrypt** - Password hashing
 
 ### Frontend
-- Next.js 14.x
-- React 18.x
-- TypeScript
-- Tailwind CSS
-- Axios untuk HTTP client
-- React Icons
+- **Next.js** 14.x - React framework dengan App Router
+- **React** 18.x
+- **TypeScript** - Type-safe JavaScript
+- **Tailwind CSS** - Utility-first CSS framework
+- **Axios** - HTTP client
+- **React Icons** - Icon library
 
-## Persyaratan Sistem
+---
 
-- Node.js v22.20.0 (atau versi kompatibel)
-- MongoDB 4.4 atau lebih baru
-- npm atau yarn
+## 📦 Prasyarat
 
-## Instalasi
+Sebelum memulai, pastikan Anda telah menginstall:
 
-### 1. Clone atau Download Project
+- **Node.js** v18.x atau lebih tinggi
+- **npm** atau **yarn**
+- **MongoDB** v6.x atau lebih tinggi
+- **Git** (optional)
 
-Pastikan Anda berada di direktori `d:\Data\Development\PBJ\Struktur Anggaran`
+### Cek Versi
 
-### 2. Setup Database MongoDB
+\`\`\`bash
+node --version  # Harus v18.x atau lebih tinggi
+npm --version
+mongod --version  # MongoDB harus sudah running
+\`\`\`
 
-Pastikan MongoDB berjalan di `mongodb://localhost:27017`
+---
 
-Database akan otomatis dibuat dengan nama `struktur-anggaran`
+## 🚀 Instalasi
 
-### 3. Instalasi Backend
+### 1. Clone Repository
 
-```bash
+\`\`\`bash
+git clone https://github.com/your-repo/struktur-anggaran.git
+cd struktur-anggaran
+\`\`\`
+
+### 2. Install Dependencies
+
+#### Backend
+\`\`\`bash
 cd backend
 npm install
-```
+\`\`\`
 
-### 4. Instalasi Frontend
-
-```bash
-cd frontend
+#### Frontend
+\`\`\`bash
+cd ../frontend
 npm install
-```
+\`\`\`
 
-## Konfigurasi
+---
 
-### Backend (.env)
+## ⚙️ Konfigurasi
 
-File `.env` sudah dibuat di folder `backend`:
+### 1. Setup MongoDB
 
-```env
+Pastikan MongoDB sudah running:
+
+\`\`\`bash
+# Windows (jika menggunakan MongoDB service)
+net start MongoDB
+
+# Linux/Mac
+sudo systemctl start mongod
+
+# Atau jalankan mongod secara manual
+mongod --dbpath /path/to/your/data
+\`\`\`
+
+### 2. Konfigurasi Backend
+
+File \`.env\` sudah ada di folder \`backend/\`. Edit sesuai kebutuhan:
+
+\`\`\`env
 MONGODB_URI=mongodb://localhost:27017/struktur-anggaran
 JWT_SECRET=your-secret-key-change-this-in-production
 JWT_EXPIRATION=7d
@@ -74,185 +125,196 @@ PORT=3001
 
 # API data.pbj.my.id credentials
 PBJ_API_USERNAME=admin
-PBJ_API_PASSWORD=tetap semangat
-```
+PBJ_API_PASSWORD=tetapsemangat
+\`\`\`
 
-**PENTING**:
-- Ganti `JWT_SECRET` dengan secret key yang aman untuk production.
-- Kredensial `PBJ_API_USERNAME` dan `PBJ_API_PASSWORD` digunakan untuk mengakses API data.pbj.my.id yang memerlukan basic authentication.
+**⚠️ PENTING:** Ganti \`JWT_SECRET\` dengan string random yang kuat untuk production!
 
-### Frontend (.env.local)
+### 3. Konfigurasi Frontend
 
-File `.env.local` sudah dibuat di folder `frontend`:
+Buat file \`.env.local\` di folder \`frontend/\`:
 
-```env
+\`\`\`env
 NEXT_PUBLIC_API_URL=http://localhost:3001
-```
+\`\`\`
 
-## Menjalankan Aplikasi
+---
 
-### 1. Jalankan Backend (Terminal 1)
+## 🏃 Menjalankan Aplikasi
 
-```bash
+### Mode Development
+
+#### 1. Jalankan Backend
+
+\`\`\`bash
 cd backend
 npm run start:dev
-```
+\`\`\`
 
-Backend akan berjalan di `http://localhost:3001`
+Backend akan berjalan di: **http://localhost:3001**
 
-Akun superadmin default akan otomatis dibuat:
-- **Username**: superadmin
-- **Password**: admin123
+- API: http://localhost:3001
+- Swagger UI: http://localhost:3001/api
 
-### 2. Jalankan Frontend (Terminal 2)
+#### 2. Jalankan Frontend
 
-```bash
+Buka terminal baru:
+
+\`\`\`bash
 cd frontend
 npm run dev
-```
+\`\`\`
 
-Frontend akan berjalan di `http://localhost:3000`
+Frontend akan berjalan di: **http://localhost:3000**
 
-### 3. Akses Aplikasi
+---
 
-Buka browser dan akses `http://localhost:3000`
+## 📚 API Documentation
 
-Login dengan kredensial:
-- **Username**: superadmin
-- **Password**: admin123
+### Swagger UI
 
-## Role & Permissions
+Dokumentasi API interaktif tersedia di:
+\`\`\`
+http://localhost:3001/api
+\`\`\`
 
-### Superadmin
-- Semua akses Admin
-- Membuat dan mengelola akun Admin untuk OPD berbeda
-- Mengelola user (CRUD)
+### API Documentation File
 
-### Admin
-- Mengisi dan mengelola data struktur anggaran
-- Melihat dashboard dan statistik
-- Melihat log aktivitas
+Dokumentasi lengkap API tersedia di:
+- [API_DOCUMENTATION.md](./API_DOCUMENTATION.md)
 
-## Struktur Project
+### Quick Start API
 
-```
-Struktur Anggaran/
+1. **Login**
+\`\`\`bash
+curl -X POST http://localhost:3001/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"username":"superadmin","password":"admin123"}'
+\`\`\`
+
+2. **Get Data (dengan token)**
+\`\`\`bash
+curl -X GET http://localhost:3001/struktur-anggaran?tahun=2025 \
+  -H "Authorization: Bearer YOUR_TOKEN"
+\`\`\`
+
+---
+
+## 👥 User Roles
+
+### Default Superadmin
+
+Aplikasi secara otomatis membuat user superadmin saat pertama kali dijalankan:
+
+\`\`\`
+Username: superadmin
+Password: admin123
+Role: superadmin
+\`\`\`
+
+**⚠️ PENTING:** Ganti password default ini setelah login pertama kali!
+
+### Role Permissions
+
+| Fitur | Admin | Superadmin |
+|-------|-------|------------|
+| Login | ✅ | ✅ |
+| Dashboard | ✅ | ✅ |
+| CRUD Struktur Anggaran | ✅ | ✅ |
+| View Own Logs | ✅ | ✅ |
+| View All Logs | ❌ | ✅ |
+| Create Admin Users | ❌ | ✅ |
+| Manage Users | ❌ | ✅ |
+
+---
+
+## 📁 Project Structure
+
+\`\`\`
+struktur-anggaran/
 ├── backend/                 # NestJS Backend
 │   ├── src/
 │   │   ├── auth/           # Authentication module
 │   │   ├── users/          # User management
-│   │   ├── struktur-anggaran/  # Main data module
-│   │   ├── logs/           # Activity logs
+│   │   ├── struktur-anggaran/  # Budget structure
 │   │   ├── satker/         # Satker data integration
-│   │   ├── schemas/        # MongoDB schemas
+│   │   ├── logs/           # Activity logs
 │   │   ├── dto/            # Data Transfer Objects
-│   │   ├── app.module.ts
-│   │   └── main.ts
-│   ├── package.json
-│   └── .env
+│   │   ├── schemas/        # MongoDB schemas
+│   │   └── main.ts         # Entry point
+│   ├── .env                # Environment variables
+│   └── package.json
 │
 ├── frontend/               # Next.js Frontend
 │   ├── src/
-│   │   ├── app/           # Next.js pages
-│   │   │   ├── dashboard/
-│   │   │   ├── struktur-anggaran/
-│   │   │   ├── users/
-│   │   │   └── logs/
+│   │   ├── app/           # App Router pages
+│   │   │   ├── login/     # Login page
+│   │   │   ├── dashboard/ # Dashboard
+│   │   │   ├── struktur-anggaran/  # Budget CRUD
+│   │   │   ├── users/     # User management
+│   │   │   └── logs/      # Activity logs
 │   │   ├── components/    # Reusable components
 │   │   ├── contexts/      # React contexts
-│   │   └── lib/          # Utilities
-│   ├── package.json
-│   └── .env.local
+│   │   └── lib/           # Utilities & API client
+│   ├── .env.local         # Environment variables
+│   └── package.json
 │
-└── README.md
-```
+├── API_DOCUMENTATION.md   # API docs
+├── README.md             # This file
+└── QUICK_START.txt       # Quick reference
+\`\`\`
 
-## API Endpoints
+---
 
-### Authentication
-- `POST /auth/login` - Login
-- `GET /auth/profile` - Get user profile
+## 🔒 Security Notes
 
-### Users (Superadmin only)
-- `GET /users` - List all users
-- `POST /users` - Create user
-- `PATCH /users/:id` - Update user
-- `DELETE /users/:id` - Delete user
+### Production Checklist
 
-### Struktur Anggaran
-- `GET /struktur-anggaran` - List all (with tahun filter)
-- `GET /struktur-anggaran/statistics` - Get statistics
-- `POST /struktur-anggaran` - Create new entry
-- `PATCH /struktur-anggaran/:id` - Update entry
-- `DELETE /struktur-anggaran/:id` - Delete entry
+- [ ] Ganti JWT_SECRET dengan nilai random yang kuat
+- [ ] Ganti password default superadmin
+- [ ] Gunakan HTTPS untuk semua komunikasi
+- [ ] Enable CORS hanya untuk domain yang dipercaya
+- [ ] Implement rate limiting
+- [ ] Setup firewall untuk MongoDB
+- [ ] Enable MongoDB authentication
+- [ ] Regular backup database
 
-### Satker
-- `GET /satker?tahun=2025` - Get satker data from parquet API
+### Generate Strong JWT Secret
 
-### Logs
-- `GET /logs` - Get activity logs
-- `GET /logs/user/:userId` - Get logs by user
-
-## Data Satker Integration
-
-Aplikasi terintegrasi dengan API Parquet untuk data Master Satker:
-
-```
-https://data.pbj.my.id/rup/D197/RUP-MasterSatker/{tahun}/data.parquet
-```
-
-**Autentikasi API:**
-- API ini memerlukan basic authentication
-- Username: `admin`
-- Password: `tetap semangat`
-- Kredensial sudah dikonfigurasi di file `.env` backend
-
-Data satker akan otomatis diload saat membuat struktur anggaran baru berdasarkan tahun yang dipilih.
-
-## Production Build
-
-### Backend
-```bash
-cd backend
-npm run build
-npm run start:prod
-```
-
-### Frontend
-```bash
-cd frontend
-npm run build
-npm start
-```
-
-## Troubleshooting
-
-### Port sudah digunakan
-Jika port 3000 atau 3001 sudah digunakan, ubah di:
-- Backend: file `.env` (PORT=3001)
-- Frontend: jalankan dengan `npm run dev -- -p 3002`
-
-### MongoDB Connection Error
-Pastikan MongoDB berjalan:
-```bash
-# Windows
-net start MongoDB
-
+\`\`\`bash
 # Linux/Mac
-sudo systemctl start mongodb
-```
+openssl rand -base64 32
 
-### Error saat install dependencies
-Hapus folder `node_modules` dan `package-lock.json`, lalu install ulang:
-```bash
-rm -rf node_modules package-lock.json
-npm install
-```
+# Node.js
+node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
+\`\`\`
 
-## Support
+---
 
-Untuk pertanyaan atau issue, silakan hubungi developer atau buat issue di repository.
+## 📝 Scripts
 
-## License
+### Backend Scripts
 
-MIT License
+\`\`\`bash
+npm run start:dev    # Development mode with hot reload
+npm run start:prod   # Production mode
+npm run build        # Build for production
+\`\`\`
+
+### Frontend Scripts
+
+\`\`\`bash
+npm run dev         # Development server
+npm run build       # Build for production
+npm run start       # Start production server
+\`\`\`
+
+---
+
+## 📄 License
+
+Copyright © 2026 Struktur Anggaran. All rights reserved.
+
+---
+
+**Happy Coding! 🚀**
