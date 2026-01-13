@@ -19,7 +19,6 @@ export default function LoginPage() {
     const user = localStorage.getItem('user');
 
     if (token && user) {
-      console.log('🔐 Login page: Already authenticated, redirecting to dashboard');
       window.location.href = '/dashboard';
     } else {
       setChecking(false);
@@ -56,37 +55,14 @@ export default function LoginPage() {
         throw new Error('Invalid response from server');
       }
 
-      // Debug: Check localStorage before writing
-      console.log('📋 Before login - localStorage contents:', {
-        token: localStorage.getItem('token'),
-        user: localStorage.getItem('user')
-      });
-
       // Store JWT token securely
-      console.log('💾 Writing to localStorage...');
       localStorage.setItem('token', access_token);
       localStorage.setItem('user', JSON.stringify(user));
 
-      // Verify write was successful immediately
-      const verifyToken = localStorage.getItem('token');
-      const verifyUser = localStorage.getItem('user');
-
-      console.log('✅ Login successful!');
-      console.log('📝 Token received from API:', access_token.substring(0, 20) + '...');
-      console.log('👤 User received from API:', user);
-      console.log('💾 localStorage AFTER setItem:', {
-        token: verifyToken ? `EXISTS (${verifyToken.substring(0, 20)}...)` : 'MISSING',
-        user: verifyUser ? 'EXISTS' : 'MISSING'
-      });
-      console.log('🔍 Token match?', verifyToken === access_token);
-
-      // Use Next.js router instead of window.location
-      console.log('🚀 Redirecting to dashboard using router.push...');
+      // Redirect to dashboard
       router.push('/dashboard');
 
     } catch (err: any) {
-      console.error('Login error:', err);
-      
       // Clear any existing auth data on login failure
       localStorage.removeItem('token');
       localStorage.removeItem('user');
@@ -96,12 +72,14 @@ export default function LoginPage() {
         setError('Username atau password salah');
       } else if (err.response?.status === 403) {
         setError('Akun Anda tidak aktif');
+      } else if (err.response?.status === 429) {
+        setError('Terlalu banyak percobaan login. Tunggu beberapa saat lalu coba lagi.');
       } else if (err.code === 'ERR_NETWORK') {
-        setError('Tidak dapat terhubung ke server. Pastikan backend berjalan.');
+        setError('Tidak dapat terhubung ke server');
       } else {
-        setError(err.response?.data?.message || 'Terjadi kesalahan. Silakan coba lagi.');
+        setError('Terjadi kesalahan. Silakan coba lagi.');
       }
-      
+
       setLoading(false);
     }
   };
@@ -198,21 +176,6 @@ export default function LoginPage() {
               )}
             </button>
           </form>
-
-          {/* Info Box */}
-          <div className="mt-6 text-center">
-            <div className="bg-gray-50 rounded-lg p-4">
-              <p className="text-sm text-gray-600 mb-2">Default Superadmin:</p>
-              <div className="font-mono text-sm">
-                <p className="text-gray-800">
-                  <span className="text-gray-500">Username:</span> <strong>superadmin</strong>
-                </p>
-                <p className="text-gray-800">
-                  <span className="text-gray-500">Password:</span> <strong>admin123</strong>
-                </p>
-              </div>
-            </div>
-          </div>
 
           {/* Security Notice */}
           <div className="mt-4 text-center">

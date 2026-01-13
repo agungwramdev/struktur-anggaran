@@ -91,8 +91,8 @@ Before deploying to production:
 - [ ] Implement HSTS headers
 
 ### Additional Security
-- [ ] Implement rate limiting
-- [ ] Add request throttling
+- [x] **Implement rate limiting** - ✅ COMPLETED (10 requests/60s globally)
+- [x] **Add request throttling** - ✅ COMPLETED (5 login attempts/60s)
 - [ ] Enable helmet.js for security headers
 - [ ] Implement CSRF protection
 - [ ] Add IP whitelisting if needed

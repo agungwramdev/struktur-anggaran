@@ -1,6 +1,8 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
+import { ThrottlerModule, ThrottlerGuard } from '@nestjs/throttler';
+import { APP_GUARD } from '@nestjs/core';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { StrukturAnggaranModule } from './struktur-anggaran/struktur-anggaran.module';
@@ -13,11 +15,21 @@ import { SatkerModule } from './satker/satker.module';
       isGlobal: true,
     }),
     MongooseModule.forRoot(process.env.MONGODB_URI),
+    ThrottlerModule.forRoot([{
+      ttl: 60000, // Time window: 60 seconds
+      limit: 10, // Max 10 requests per window
+    }]),
     AuthModule,
     UsersModule,
     StrukturAnggaranModule,
     LogsModule,
     SatkerModule,
+  ],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: ThrottlerGuard,
+    },
   ],
 })
 export class AppModule {}
