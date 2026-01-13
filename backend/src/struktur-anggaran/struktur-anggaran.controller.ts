@@ -59,6 +59,15 @@ export class StrukturAnggaranController {
     return this.strukturAnggaranService.getStatistics();
   }
 
+  @Get('used-satker')
+  @Roles('admin', 'superadmin')
+  @ApiOperation({ summary: 'Get list of satker codes that already have data for a year' })
+  @ApiQuery({ name: 'tahun', required: true, description: 'Year to check' })
+  @ApiResponse({ status: 200, description: 'Returns array of used satker codes' })
+  getUsedSatker(@Query('tahun') tahun: string) {
+    return this.strukturAnggaranService.getUsedSatkerCodes(parseInt(tahun));
+  }
+
   @Get('satker/:kdSatker')
   @Roles('admin', 'superadmin')
   findBySatker(@Param('kdSatker') kdSatker: string, @Query('tahun') tahun?: string) {

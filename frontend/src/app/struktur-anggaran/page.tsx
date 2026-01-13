@@ -95,8 +95,25 @@ export default function StrukturAnggaranPage() {
   const fetchSatkerData = async () => {
     try {
       setLoadingSatker(true);
-      const response = await api.get(`/satker?tahun=${formData.tahun_anggaran}`);
-      setSatkerList(response.data);
+
+      // Fetch all satker data
+      const satkerResponse = await api.get(`/satker?tahun=${formData.tahun_anggaran}`);
+
+      // Fetch used satker codes for this year (only if creating new, not editing)
+      if (!editingId) {
+        const usedResponse = await api.get(`/struktur-anggaran/used-satker?tahun=${formData.tahun_anggaran}`);
+        const usedCodes = usedResponse.data;
+
+        // Filter out satker that already have data
+        const availableSatker = satkerResponse.data.filter(
+          (satker: SatkerData) => !usedCodes.includes(satker.kd_satker)
+        );
+
+        setSatkerList(availableSatker);
+      } else {
+        // When editing, show all satker (including the current one)
+        setSatkerList(satkerResponse.data);
+      }
     } catch (error) {
       console.error('Error fetching satker data:', error);
       alert('Gagal memuat data satker');
@@ -142,7 +159,14 @@ export default function StrukturAnggaranPage() {
     } catch (error: any) {
       console.error('Error saving data:', error);
       console.error('Error response:', error.response?.data);
-      alert(error.response?.data?.message || 'Gagal menyimpan data');
+
+      // Handle specific error cases
+      if (error.response?.status === 409) {
+        // Conflict - satker already exists
+        alert(error.response?.data?.message || 'Data untuk satker ini sudah ada untuk tahun tersebut');
+      } else {
+        alert(error.response?.data?.message || 'Gagal menyimpan data');
+      }
     }
   };
 

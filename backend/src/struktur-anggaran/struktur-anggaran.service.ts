@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable, NotFoundException, ConflictException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { StrukturAnggaran, StrukturAnggaranDocument } from '../schemas/struktur-anggaran.schema';
@@ -18,6 +18,18 @@ export class StrukturAnggaranService {
     createStrukturAnggaranDto: CreateStrukturAnggaranDto,
     userId?: string,
   ): Promise<StrukturAnggaran> {
+    // Check if satker already exists for this year
+    const existingData = await this.strukturAnggaranModel.findOne({
+      kd_satker: createStrukturAnggaranDto.kd_satker,
+      tahun_anggaran: createStrukturAnggaranDto.tahun_anggaran,
+    }).exec();
+
+    if (existingData) {
+      throw new ConflictException(
+        `Data untuk satker ${createStrukturAnggaranDto.nama_satker} tahun ${createStrukturAnggaranDto.tahun_anggaran} sudah ada. Satu satker hanya boleh memiliki satu data per tahun.`
+      );
+    }
+
     const createdData = new this.strukturAnggaranModel(createStrukturAnggaranDto);
     const savedData = await createdData.save();
 
@@ -118,5 +130,13 @@ export class StrukturAnggaranService {
       totalBelanjaPengadaan,
       totalBelanjaNonPengadaan,
     };
+  }
+
+  async getUsedSatkerCodes(tahun: number): Promise<string[]> {
+    const data = await this.strukturAnggaranModel
+      .find({ tahun_anggaran: tahun })
+      .select('kd_satker')
+      .exec();
+    return data.map(item => item.kd_satker);
   }
 }
