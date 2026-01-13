@@ -40,7 +40,8 @@ export default function StrukturAnggaranPage() {
   const [showModal, setShowModal] = useState(false);
   const [editingId, setEditingId] = useState<string | null>(null);
   const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState(''); // Search term for main table
+  const [satkerSearchTerm, setSatkerSearchTerm] = useState(''); // Search term for satker modal
   const [loadingSatker, setLoadingSatker] = useState(false);
 
   const [formData, setFormData] = useState({
@@ -67,7 +68,7 @@ export default function StrukturAnggaranPage() {
     if (showModal && !editingId) {
       // Reset satker list when year changes
       setSatkerList([]);
-      setSearchTerm('');
+      setSatkerSearchTerm('');
       fetchSatkerData();
     }
   }, [showModal, formData.tahun_anggaran]);
@@ -204,6 +205,7 @@ export default function StrukturAnggaranPage() {
 
   const resetForm = () => {
     setEditingId(null);
+    setSatkerSearchTerm('');
     setFormData({
       tahun_anggaran: new Date().getFullYear(),
       kd_klpd: '',
@@ -229,8 +231,8 @@ export default function StrukturAnggaranPage() {
 
   const filteredSatker = satkerList.filter(
     (item) =>
-      item.nama_satker.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      item.kd_satker.toLowerCase().includes(searchTerm.toLowerCase())
+      item.nama_satker.toLowerCase().includes(satkerSearchTerm.toLowerCase()) ||
+      item.kd_satker.toLowerCase().includes(satkerSearchTerm.toLowerCase())
   );
 
   return (
@@ -397,8 +399,8 @@ export default function StrukturAnggaranPage() {
                           <input
                             type="text"
                             placeholder="Cari satker..."
-                            value={searchTerm}
-                            onChange={(e) => setSearchTerm(e.target.value)}
+                            value={satkerSearchTerm}
+                            onChange={(e) => setSatkerSearchTerm(e.target.value)}
                             className="input mb-2"
                           />
                           <div className="max-h-60 overflow-y-auto border border-gray-300 rounded-lg">
