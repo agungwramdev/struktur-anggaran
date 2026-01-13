@@ -13,25 +13,35 @@ export interface SatkerData {
 export class SatkerService {
   async fetchSatkerData(tahun: number): Promise<SatkerData[]> {
     try {
-      const url = `https://data.pbj.my.id/rup/D197/RUP-MasterSatker/${tahun}/data.json`;
+      const url = `https://data.pbj.my.id/inaproc/rup/D197/RUP-Master-Satker/${tahun}/data.parquet`;
 
       console.log(`Fetching satker data from: ${url}`);
 
       const response = await axios.get(url, {
+        responseType: 'arraybuffer',
         auth: {
           username: process.env.PBJ_API_USERNAME || 'admin',
           password: process.env.PBJ_API_PASSWORD || 'tetapsemangat',
         },
       });
 
-      const records: SatkerData[] = response.data.map((record: any) => ({
-        kd_klpd: record.kd_klpd || '',
-        nama_klpd: record.nama_klpd || '',
-        kd_satker: record.kd_satker || '',
-        kd_satker_str: record.kd_satker_str || '',
-        nama_satker: record.nama_satker || '',
-      }));
+      const parquet = await import('parquetjs');
+      const reader = await parquet.ParquetReader.openBuffer(Buffer.from(response.data));
+      const cursor = reader.getCursor();
+      const records: SatkerData[] = [];
 
+      let record = null;
+      while ((record = await cursor.next())) {
+        records.push({
+          kd_klpd: record.kd_klpd || '',
+          nama_klpd: record.nama_klpd || '',
+          kd_satker: record.kd_satker || '',
+          kd_satker_str: record.kd_satker_str || '',
+          nama_satker: record.nama_satker || '',
+        });
+      }
+
+      await reader.close();
       console.log(`Successfully fetched ${records.length} satker records for year ${tahun}`);
       return records;
     } catch (error) {
