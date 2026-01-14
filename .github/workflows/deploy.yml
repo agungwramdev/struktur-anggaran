@@ -16,7 +16,7 @@ jobs:
           clean: true
 
       - name: Stop existing containers
-        run: docker-compose down -v
+        run: docker-compose down  # Removed -v to preserve MongoDB data
 
       - name: Remove unused Docker data
         run: docker system prune -a -f
