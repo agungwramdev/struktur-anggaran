@@ -1,7 +1,17 @@
 import axios from 'axios';
 
+// Use API_URL for server-side requests (SSR), NEXT_PUBLIC_API_URL for client-side
+const getBaseURL = () => {
+  // Server-side (in Docker container)
+  if (typeof window === 'undefined') {
+    return process.env.API_URL || process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+  }
+  // Client-side (browser)
+  return process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+};
+
 const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001',
+  baseURL: getBaseURL(),
 });
 
 api.interceptors.request.use((config) => {
