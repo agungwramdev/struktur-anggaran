@@ -3,7 +3,7 @@ services:
     image: mongo:7
     container_name: struktur-anggaran-mongodb
     ports:
-      - "27017:27017"
+      - "27018:27017"  # Changed to 27018 to avoid conflict with other project
     volumes:
       - mongodb_data:/data/db
     environment:
