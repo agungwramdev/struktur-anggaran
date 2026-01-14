@@ -9,9 +9,10 @@ async function bootstrap() {
 
   // CORS Configuration - Allow multiple origins
   const allowedOrigins = [
-    'http://localhost:4000',           // Local development
-    'http://172.16.2.24:4000',         // VPS IP
-    process.env.FRONTEND_URL,          // Dynamic from environment
+    'http://localhost:4000',                    // Local development
+    'http://172.16.2.24:4000',                  // VPS IP
+    'https://struktur-anggaran.pbj.my.id',      // Production HTTPS
+    process.env.FRONTEND_URL,                   // Dynamic from environment
   ].filter(Boolean); // Remove undefined values
 
   app.enableCors({

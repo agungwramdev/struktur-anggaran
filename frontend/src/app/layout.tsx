@@ -17,6 +17,10 @@ export default function RootLayout({
 }) {
   return (
     <html lang="id">
+      <head>
+        {/* Allow mixed content for development - Remove in production with proper HTTPS setup */}
+        <meta httpEquiv="Content-Security-Policy" content="upgrade-insecure-requests" />
+      </head>
       <body className={inter.className}>
         <AuthProvider>{children}</AuthProvider>
       </body>
