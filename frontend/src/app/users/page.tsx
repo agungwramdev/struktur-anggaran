@@ -59,10 +59,8 @@ export default function UsersPage() {
     e.preventDefault();
     try {
       if (editingId) {
-        const updateData = { ...formData };
-        if (!updateData.password) {
-          delete updateData.password;
-        }
+        const { password, ...rest } = formData;
+        const updateData = password ? { ...rest, password } : rest;
         await api.patch(`/users/${editingId}`, updateData);
       } else {
         await api.post('/users', formData);
