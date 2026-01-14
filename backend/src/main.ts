@@ -7,9 +7,18 @@ import { UsersService } from './users/users.service';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+  // CORS Configuration - Allow multiple origins
+  const allowedOrigins = [
+    'http://localhost:4000',           // Local development
+    'http://172.16.2.24:4000',         // VPS IP
+    process.env.FRONTEND_URL,          // Dynamic from environment
+  ].filter(Boolean); // Remove undefined values
+
   app.enableCors({
-    origin: 'http://localhost:4000',
+    origin: allowedOrigins,
     credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
   });
 
   app.useGlobalPipes(new ValidationPipe({

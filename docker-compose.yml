@@ -31,6 +31,7 @@ services:
       - THROTTLE_TTL=${THROTTLE_TTL:-60000}
       - THROTTLE_LIMIT=${THROTTLE_LIMIT:-10}
       - LOGIN_THROTTLE_LIMIT=${LOGIN_THROTTLE_LIMIT:-5}
+      - FRONTEND_URL=${FRONTEND_URL:-http://localhost:4000}
     depends_on:
       - db
     networks:
