@@ -1,14 +1,14 @@
 services:
-  mongodb:
+  db:
     image: mongo:7
     container_name: struktur-anggaran-mongodb
-    restart: unless-stopped
     ports:
       - "27017:27017"
-    environment:
-      MONGO_INITDB_DATABASE: struktur-anggaran
     volumes:
       - mongodb_data:/data/db
+    environment:
+      - MONGO_INITDB_DATABASE=struktur-anggaran
+    restart: always
     networks:
       - struktur-anggaran-network
 
@@ -19,10 +19,10 @@ services:
     container_name: struktur-anggaran-backend
     restart: unless-stopped
     ports:
-      - "3001:3001"
+      - "4001:3001"
     environment:
       - NODE_ENV=production
-      - MONGODB_URI=mongodb://mongodb:27017/struktur-anggaran
+      - MONGODB_URI=mongodb://db:27017/struktur-anggaran
       - PORT=3001
       - JWT_SECRET=${JWT_SECRET:-CHANGE_THIS_TO_A_SECURE_RANDOM_STRING}
       - JWT_EXPIRATION=${JWT_EXPIRATION:-7d}
@@ -32,7 +32,7 @@ services:
       - THROTTLE_LIMIT=${THROTTLE_LIMIT:-10}
       - LOGIN_THROTTLE_LIMIT=${LOGIN_THROTTLE_LIMIT:-5}
     depends_on:
-      - mongodb
+      - db
     networks:
       - struktur-anggaran-network
 
@@ -43,10 +43,10 @@ services:
     container_name: struktur-anggaran-frontend
     restart: unless-stopped
     ports:
-      - "3000:3000"
+      - "4000:3000"
     environment:
       - NODE_ENV=production
-      - NEXT_PUBLIC_API_URL=http://localhost:3001
+      - NEXT_PUBLIC_API_URL=http://localhost:4001
       - API_URL=http://backend:3001
     depends_on:
       - backend

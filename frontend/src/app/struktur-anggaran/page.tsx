@@ -77,9 +77,10 @@ export default function StrukturAnggaranPage() {
     const total =
       formData.belanja_operasi +
       formData.belanja_modal +
-      formData.belanja_bbt;
+      formData.belanja_bbt +
+      formData.belanja_non_pengadaan;
     setFormData((prev) => ({ ...prev, total_belanja: total }));
-  }, [formData.belanja_operasi, formData.belanja_modal, formData.belanja_bbt]);
+  }, [formData.belanja_operasi, formData.belanja_modal, formData.belanja_bbt, formData.belanja_non_pengadaan]);
 
   const fetchData = async () => {
     try {
