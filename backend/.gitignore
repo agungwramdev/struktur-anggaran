@@ -3,7 +3,7 @@
 /node_modules
 
 # Logs
-logs
+# logs - COMMENTED: This was blocking src/logs/ module folder
 *.log
 npm-debug.log*
 pnpm-debug.log*
