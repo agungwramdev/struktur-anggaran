@@ -9,10 +9,12 @@ async function bootstrap() {
 
   // CORS Configuration - Allow multiple origins
   const allowedOrigins = [
-    'http://localhost:4000',                    // Local development
-    'http://172.16.2.24:4000',                  // VPS IP
-    'https://struktur-anggaran.pbj.my.id',      // Production HTTPS
-    process.env.FRONTEND_URL,                   // Dynamic from environment
+    'http://localhost:4000',                         // Local development
+    'http://172.16.2.24:4000',                       // VPS IP HTTP
+    'https://struktur-anggaran.pbj.my.id',           // Production HTTPS (default port)
+    'https://struktur-anggaran.pbj.my.id:4000',      // Production HTTPS with port 4000
+    'https://struktur-anggaran.pbj.my.id:4001',      // Production HTTPS with port 4001
+    process.env.FRONTEND_URL,                        // Dynamic from environment
   ].filter(Boolean); // Remove undefined values
 
   app.enableCors({
