@@ -4,10 +4,11 @@ import axios from 'axios';
 const getBaseURL = () => {
   // Server-side (in Docker container)
   if (typeof window === 'undefined') {
-    return process.env.API_URL || process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+    return process.env.API_URL || 'http://backend:3001';
   }
-  // Client-side (browser)
-  return process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4001';
+  // Client-side (browser) - Use /api prefix for reverse proxy
+  // This allows: https://struktur-anggaran.pbj.my.id/api/auth/login
+  return process.env.NEXT_PUBLIC_API_URL || '/api';
 };
 
 const api = axios.create({
