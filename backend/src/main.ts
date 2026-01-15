@@ -29,6 +29,10 @@ async function bootstrap() {
     transform: true,
   }));
 
+  // Set global prefix for all routes
+  // All routes will now be: /api/auth/login, /api/users, etc.
+  app.setGlobalPrefix('api');
+
   // Swagger Configuration
   const config = new DocumentBuilder()
     .setTitle('Struktur Anggaran API')
@@ -53,7 +57,7 @@ async function bootstrap() {
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, document);
+  SwaggerModule.setup('api/docs', app, document);
 
   const usersService = app.get(UsersService);
   await usersService.seedSuperAdmin();
@@ -61,6 +65,6 @@ async function bootstrap() {
   const port = process.env.PORT || 3001;
   await app.listen(port);
   console.log(`Application is running on: http://localhost:${port}`);
-  console.log(`Swagger documentation available at: http://localhost:${port}/api`);
+  console.log(`Swagger documentation available at: http://localhost:${port}/api/docs`);
 }
 bootstrap();
