@@ -73,14 +73,22 @@ export default function StrukturAnggaranPage() {
     }
   }, [showModal, formData.tahun_anggaran]);
 
+  // Auto-calculate belanja_pengadaan = belanja_operasi + belanja_modal + belanja_bbt
   useEffect(() => {
-    const total =
+    const pengadaan =
       formData.belanja_operasi +
       formData.belanja_modal +
-      formData.belanja_bbt +
+      formData.belanja_bbt;
+    setFormData((prev) => ({ ...prev, belanja_pengadaan: pengadaan }));
+  }, [formData.belanja_operasi, formData.belanja_modal, formData.belanja_bbt]);
+
+  // Auto-calculate total_belanja = belanja_pengadaan + belanja_non_pengadaan
+  useEffect(() => {
+    const total =
+      formData.belanja_pengadaan +
       formData.belanja_non_pengadaan;
     setFormData((prev) => ({ ...prev, total_belanja: total }));
-  }, [formData.belanja_operasi, formData.belanja_modal, formData.belanja_bbt, formData.belanja_non_pengadaan]);
+  }, [formData.belanja_pengadaan, formData.belanja_non_pengadaan]);
 
   const fetchData = async () => {
     try {
@@ -488,17 +496,25 @@ export default function StrukturAnggaranPage() {
                           required
                         />
 
-                        <CurrencyInput
-                          label="Belanja Pengadaan"
-                          value={formData.belanja_pengadaan}
-                          onChange={(value) =>
-                            setFormData({
-                              ...formData,
-                              belanja_pengadaan: value,
-                            })
-                          }
-                          required
-                        />
+                        <div>
+                          <label className="block text-sm font-medium text-gray-700 mb-2">
+                            Belanja Pengadaan
+                          </label>
+                          <div className="relative">
+                            <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">
+                              Rp
+                            </span>
+                            <input
+                              type="text"
+                              value={new Intl.NumberFormat('id-ID').format(formData.belanja_pengadaan)}
+                              className="input pl-10 text-right bg-gray-100"
+                              disabled
+                            />
+                          </div>
+                          <p className="text-xs text-gray-500 mt-1">
+                            = Operasi + Modal + BBT
+                          </p>
+                        </div>
 
                         <div>
                           <label className="block text-sm font-medium text-gray-700 mb-2">
