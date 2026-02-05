@@ -1,7 +1,8 @@
 :80 {
 	# HTTP Basic Auth - browser akan tampilkan popup login
+	# Ganti hash dengan: docker run --rm caddy:2-alpine caddy hash-password --plaintext "password_baru"
 	basic_auth {
-		{$CADDY_AUTH_USER:admin} {$CADDY_AUTH_HASH:$2a$14$VgTeZHXpe2NwUHijZIZOzeP3WkNOB6XvDYbYv0X8kjVbf6US9kfdq}
+		admin $2a$14$TJZyYdFNydj9y8suXwei5.HgtrnITiciJMib7AnTZvQQ7CmukUz.e
 	}
 
 	# Serve files with directory browsing (handle_path otomatis strip /files prefix)

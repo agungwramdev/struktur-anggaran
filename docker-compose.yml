@@ -70,9 +70,6 @@ services:
       - export_data:/data/exports:ro
       - caddy_data:/data/caddy
       - caddy_config:/config
-    environment:
-      - CADDY_AUTH_USER=${CADDY_AUTH_USER:-admin}
-      - CADDY_AUTH_HASH=${CADDY_AUTH_HASH:-$$2a$$14$$VgTeZHXpe2NwUHijZIZOzeP3WkNOB6XvDYbYv0X8kjVbf6US9kfdq}
     depends_on:
       - backend
     networks:
