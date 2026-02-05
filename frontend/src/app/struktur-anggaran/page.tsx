@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import Layout from '@/components/Layout';
 import ProtectedRoute from '@/components/ProtectedRoute';
 import CurrencyInput from '@/components/CurrencyInput';
@@ -43,6 +43,8 @@ export default function StrukturAnggaranPage() {
   const [searchTerm, setSearchTerm] = useState(''); // Search term for main table
   const [satkerSearchTerm, setSatkerSearchTerm] = useState(''); // Search term for satker modal
   const [loadingSatker, setLoadingSatker] = useState(false);
+  const [showDownloadMenu, setShowDownloadMenu] = useState(false);
+  const downloadMenuRef = useRef<HTMLDivElement>(null);
 
   const [formData, setFormData] = useState({
     tahun_anggaran: new Date().getFullYear(),
@@ -232,6 +234,25 @@ export default function StrukturAnggaranPage() {
     });
   };
 
+  const handleDownload = (format: 'json' | 'xlsx' | 'parquet') => {
+    const caddyUrl = process.env.NEXT_PUBLIC_CADDY_URL || 'http://localhost:4002';
+    const url = `${caddyUrl}/files/struktur-anggaran/${selectedYear}/data.${format}`;
+    // Browser akan otomatis tampilkan popup Basic Auth jika belum login
+    window.open(url, '_blank');
+    setShowDownloadMenu(false);
+  };
+
+  // Close download menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (downloadMenuRef.current && !downloadMenuRef.current.contains(event.target as Node)) {
+        setShowDownloadMenu(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
   const filteredData = data.filter(
     (item) =>
       item.nama_satker.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -268,6 +289,36 @@ export default function StrukturAnggaranPage() {
                   </option>
                 ))}
               </select>
+              <div className="relative" ref={downloadMenuRef}>
+                <button
+                  onClick={() => setShowDownloadMenu(!showDownloadMenu)}
+                  className="btn btn-secondary flex items-center gap-2"
+                >
+                  <FiDownload /> Download
+                </button>
+                {showDownloadMenu && (
+                  <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 z-10">
+                    <button
+                      onClick={() => handleDownload('xlsx')}
+                      className="w-full px-4 py-2 text-left text-sm hover:bg-gray-50 rounded-t-lg"
+                    >
+                      Download XLSX
+                    </button>
+                    <button
+                      onClick={() => handleDownload('json')}
+                      className="w-full px-4 py-2 text-left text-sm hover:bg-gray-50"
+                    >
+                      Download JSON
+                    </button>
+                    <button
+                      onClick={() => handleDownload('parquet')}
+                      className="w-full px-4 py-2 text-left text-sm hover:bg-gray-50 rounded-b-lg"
+                    >
+                      Download Parquet
+                    </button>
+                  </div>
+                )}
+              </div>
               <button
                 onClick={() => {
                   resetForm();

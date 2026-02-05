@@ -20,6 +20,8 @@ services:
     restart: unless-stopped
     ports:
       - "4001:3001"
+    volumes:
+      - export_data:/data/exports
     environment:
       - NODE_ENV=production
       - MONGODB_URI=mongodb://db:27017/struktur-anggaran
@@ -50,7 +52,27 @@ services:
     environment:
       - NODE_ENV=production
       - NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL:-http://localhost:4001}
+      - NEXT_PUBLIC_CADDY_URL=${NEXT_PUBLIC_CADDY_URL:-http://localhost:4002}
       - API_URL=http://backend:3001
+    depends_on:
+      - backend
+    networks:
+      - struktur-anggaran-network
+
+  caddy:
+    image: caddy:2-alpine
+    container_name: struktur-anggaran-caddy
+    restart: unless-stopped
+    ports:
+      - "4002:80"
+    volumes:
+      - ./caddy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - export_data:/data/exports:ro
+      - caddy_data:/data/caddy
+      - caddy_config:/config
+    environment:
+      - CADDY_AUTH_USER=${CADDY_AUTH_USER:-admin}
+      - CADDY_AUTH_HASH=${CADDY_AUTH_HASH:-$$2a$$14$$VgTeZHXpe2NwUHijZIZOzeP3WkNOB6XvDYbYv0X8kjVbf6US9kfdq}
     depends_on:
       - backend
     networks:
@@ -58,6 +80,12 @@ services:
 
 volumes:
   mongodb_data:
+    driver: local
+  export_data:
+    driver: local
+  caddy_data:
+    driver: local
+  caddy_config:
     driver: local
 
 networks:

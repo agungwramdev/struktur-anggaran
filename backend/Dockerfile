@@ -23,11 +23,16 @@ WORKDIR /app
 # Copy package files
 COPY package*.json ./
 
-# Install only production dependencies
-RUN npm ci --only=production
+# Install only production dependencies (with build tools for native modules)
+RUN apk add --no-cache --virtual .build-deps python3 make g++ && \
+    npm ci --omit=dev && \
+    apk del .build-deps
 
 # Copy built application from builder stage
 COPY --from=builder /app/dist ./dist
+
+# Create export directory for generated files
+RUN mkdir -p /data/exports
 
 # Expose the application port
 EXPOSE 3001

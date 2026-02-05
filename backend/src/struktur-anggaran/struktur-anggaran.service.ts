@@ -5,6 +5,7 @@ import { StrukturAnggaran, StrukturAnggaranDocument } from '../schemas/struktur-
 import { CreateStrukturAnggaranDto } from '../dto/create-struktur-anggaran.dto';
 import { UpdateStrukturAnggaranDto } from '../dto/update-struktur-anggaran.dto';
 import { LogsService } from '../logs/logs.service';
+import { FileExportService } from '../file-export/file-export.service';
 
 @Injectable()
 export class StrukturAnggaranService {
@@ -12,6 +13,7 @@ export class StrukturAnggaranService {
     @InjectModel(StrukturAnggaran.name)
     private strukturAnggaranModel: Model<StrukturAnggaranDocument>,
     private logsService: LogsService,
+    private fileExportService: FileExportService,
   ) {}
 
   async create(
@@ -41,6 +43,7 @@ export class StrukturAnggaranService {
       });
     }
 
+    this.fileExportService.scheduleExport(createStrukturAnggaranDto.tahun_anggaran);
     return savedData;
   }
 
@@ -90,6 +93,7 @@ export class StrukturAnggaranService {
       });
     }
 
+    this.fileExportService.scheduleExport(updatedData.tahun_anggaran);
     return updatedData;
   }
 
@@ -108,6 +112,8 @@ export class StrukturAnggaranService {
         keterangan: `Deleted struktur anggaran for ${data.nama_satker} - ${data.tahun_anggaran}`,
       });
     }
+
+    this.fileExportService.scheduleExport(data.tahun_anggaran);
   }
 
   async getStatistics(tahun?: number): Promise<any> {
