@@ -50,7 +50,14 @@ export class SatkerService {
 
       let record = null;
       let count = 0;
+      const tahunStr = String(tahun);
       while ((record = await cursor.next())) {
+        // Filter berdasarkan tahun_aktif (format: "2024, 2025, 2026")
+        const tahunAktif = String(record.tahun_aktif || '');
+        if (tahunAktif && !tahunAktif.split(',').map(t => t.trim()).includes(tahunStr)) {
+          continue;
+        }
+
         records.push({
           kd_klpd: String(record.kd_klpd || ''),
           nama_klpd: String(record.nama_klpd || ''),
