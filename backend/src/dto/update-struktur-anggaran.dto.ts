@@ -35,7 +35,7 @@ export class UpdateStrukturAnggaranDto {
 
   @IsNumber()
   @IsOptional()
-  belanja_bbt?: number;
+  belanja_btt?: number;
 
   @IsNumber()
   @IsOptional()

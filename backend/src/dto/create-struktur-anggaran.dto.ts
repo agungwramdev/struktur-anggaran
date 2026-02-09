@@ -32,7 +32,7 @@ export class CreateStrukturAnggaranDto {
   belanja_modal: number;
 
   @IsNumber()
-  belanja_bbt: number;
+  belanja_btt: number;
 
   @IsNumber()
   belanja_non_pengadaan: number;

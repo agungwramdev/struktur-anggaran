@@ -18,7 +18,7 @@ interface StrukturAnggaran {
   nama_satker: string;
   belanja_operasi: number;
   belanja_modal: number;
-  belanja_bbt: number;
+  belanja_btt: number;
   belanja_non_pengadaan: number;
   belanja_pengadaan: number;
   total_belanja: number;
@@ -55,7 +55,7 @@ export default function StrukturAnggaranPage() {
     nama_satker: '',
     belanja_operasi: 0,
     belanja_modal: 0,
-    belanja_bbt: 0,
+    belanja_btt: 0,
     belanja_non_pengadaan: 0,
     belanja_pengadaan: 0,
     total_belanja: 0,
@@ -75,14 +75,14 @@ export default function StrukturAnggaranPage() {
     }
   }, [showModal, formData.tahun_anggaran]);
 
-  // Auto-calculate belanja_pengadaan = belanja_operasi + belanja_modal + belanja_bbt
+  // Auto-calculate belanja_pengadaan = belanja_operasi + belanja_modal + belanja_btt
   useEffect(() => {
     const pengadaan =
       formData.belanja_operasi +
       formData.belanja_modal +
-      formData.belanja_bbt;
+      formData.belanja_btt;
     setFormData((prev) => ({ ...prev, belanja_pengadaan: pengadaan }));
-  }, [formData.belanja_operasi, formData.belanja_modal, formData.belanja_bbt]);
+  }, [formData.belanja_operasi, formData.belanja_modal, formData.belanja_btt]);
 
   // Auto-calculate total_belanja = belanja_pengadaan + belanja_non_pengadaan
   useEffect(() => {
@@ -193,7 +193,7 @@ export default function StrukturAnggaranPage() {
       nama_satker: item.nama_satker,
       belanja_operasi: item.belanja_operasi,
       belanja_modal: item.belanja_modal,
-      belanja_bbt: item.belanja_bbt,
+      belanja_btt: item.belanja_btt,
       belanja_non_pengadaan: item.belanja_non_pengadaan,
       belanja_pengadaan: item.belanja_pengadaan,
       total_belanja: item.total_belanja,
@@ -226,7 +226,7 @@ export default function StrukturAnggaranPage() {
       nama_satker: '',
       belanja_operasi: 0,
       belanja_modal: 0,
-      belanja_bbt: 0,
+      belanja_btt: 0,
       belanja_non_pengadaan: 0,
       belanja_pengadaan: 0,
       total_belanja: 0,
@@ -364,7 +364,7 @@ export default function StrukturAnggaranPage() {
                       <th>Nama Satker</th>
                       <th>Belanja Operasi</th>
                       <th>Belanja Modal</th>
-                      <th>Belanja BBT</th>
+                      <th>Belanja BTT</th>
                       <th>Total Belanja</th>
                       <th>Aksi</th>
                     </tr>
@@ -376,7 +376,7 @@ export default function StrukturAnggaranPage() {
                         <td>{item.nama_satker}</td>
                         <td>{formatCurrency(item.belanja_operasi)}</td>
                         <td>{formatCurrency(item.belanja_modal)}</td>
-                        <td>{formatCurrency(item.belanja_bbt)}</td>
+                        <td>{formatCurrency(item.belanja_btt)}</td>
                         <td className="font-semibold">
                           {formatCurrency(item.total_belanja)}
                         </td>
@@ -524,12 +524,12 @@ export default function StrukturAnggaranPage() {
                         />
 
                         <CurrencyInput
-                          label="Belanja BBT"
-                          value={formData.belanja_bbt}
+                          label="Belanja BTT"
+                          value={formData.belanja_btt}
                           onChange={(value) =>
                             setFormData({
                               ...formData,
-                              belanja_bbt: value,
+                              belanja_btt: value,
                             })
                           }
                           required
@@ -563,7 +563,7 @@ export default function StrukturAnggaranPage() {
                             />
                           </div>
                           <p className="text-xs text-gray-500 mt-1">
-                            = Operasi + Modal + BBT
+                            = Operasi + Modal + BTT
                           </p>
                         </div>
 

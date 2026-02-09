@@ -123,7 +123,7 @@ export class StrukturAnggaranService {
     const totalBelanja = data.reduce((sum, item) => sum + item.total_belanja, 0);
     const totalBelanjaOperasi = data.reduce((sum, item) => sum + item.belanja_operasi, 0);
     const totalBelanjaModal = data.reduce((sum, item) => sum + item.belanja_modal, 0);
-    const totalBelanjaBBT = data.reduce((sum, item) => sum + item.belanja_bbt, 0);
+    const totalBelanjaBTT = data.reduce((sum, item) => sum + item.belanja_btt, 0);
     const totalBelanjaPengadaan = data.reduce((sum, item) => sum + item.belanja_pengadaan, 0);
     const totalBelanjaNonPengadaan = data.reduce((sum, item) => sum + item.belanja_non_pengadaan, 0);
 
@@ -132,7 +132,7 @@ export class StrukturAnggaranService {
       totalBelanja,
       totalBelanjaOperasi,
       totalBelanjaModal,
-      totalBelanjaBBT,
+      totalBelanjaBTT,
       totalBelanjaPengadaan,
       totalBelanjaNonPengadaan,
     };

@@ -30,7 +30,7 @@ export class StrukturAnggaran {
   belanja_modal: number;
 
   @Prop({ type: Number, default: 0 })
-  belanja_bbt: number;
+  belanja_btt: number;
 
   @Prop({ type: Number, default: 0 })
   belanja_non_pengadaan: number;

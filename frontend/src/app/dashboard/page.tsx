@@ -13,7 +13,7 @@ interface Statistics {
   totalBelanja: number;
   totalBelanjaOperasi: number;
   totalBelanjaModal: number;
-  totalBelanjaBBT: number;
+  totalBelanjaBTT: number;
   totalBelanjaPengadaan: number;
   totalBelanjaNonPengadaan: number;
 }
@@ -137,10 +137,10 @@ export default function DashboardPage() {
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 <div className="card">
                   <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                    Belanja BBT
+                    Belanja BTT
                   </h3>
                   <p className="text-2xl font-bold text-primary-600">
-                    {formatCurrency(statistics?.totalBelanjaBBT || 0)}
+                    {formatCurrency(statistics?.totalBelanjaBTT || 0)}
                   </p>
                 </div>
                 <div className="card">
