@@ -43,6 +43,7 @@ async function bootstrap() {
     .addTag('struktur-anggaran', 'Budget structure endpoints')
     .addTag('satker', 'Satker data endpoints')
     .addTag('logs', 'Activity logs endpoints')
+    .addTag('rup-31-maret', 'RUP 31 Maret monitoring endpoints')
     .addBearerAuth(
       {
         type: 'http',
