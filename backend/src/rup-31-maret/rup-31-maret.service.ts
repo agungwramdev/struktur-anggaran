@@ -83,11 +83,14 @@ export class Rup31MaretService implements OnModuleInit {
     persen: 'Persen',
   };
 
-  private readonly urls = {
-    penyedia: 'https://data.pbj.my.id/inaproc/rup/D197/RUP-Penyedia-Terumumkan/2026/data.json',
-    swakelola: 'https://data.pbj.my.id/inaproc/rup/D197/RUP-Swakelola-Terumumkan/2026/data.json',
-    strukturAnggaran: 'https://data.pbj.my.id/inaproc/rup/D197/RUP-Struktur-Anggaran-PD-Legacy/2026/data.json',
-  };
+  private rupUrls(year: number) {
+    const base = `https://data.pbj.my.id/inaproc/rup/D197`;
+    return {
+      penyedia: `${base}/RUP-Penyedia-Terumumkan-Legacy/${year}/data31mar.json`,
+      swakelola: `${base}/RUP-Swakelola-Terumumkan-Legacy/${year}/data31mar.json`,
+      strukturAnggaran: `${base}/RUP-Struktur-Anggaran-PD-Legacy/${year}/data31mar.json`,
+    };
+  }
 
   async onModuleInit() {
     try {
@@ -110,6 +113,8 @@ export class Rup31MaretService implements OnModuleInit {
   }
 
   async generateExport(): Promise<RupCombinedRecord[]> {
+    const year = new Date().getFullYear();
+    const urls = this.rupUrls(year);
     const authConfig = {
       auth: {
         username: process.env.PBJ_API_USERNAME || 'admin',
@@ -120,11 +125,10 @@ export class Rup31MaretService implements OnModuleInit {
 
     console.log('[RUP-31-Maret] Fetching data from external APIs...');
 
-    // Fetch all 3 data sources in parallel
     const [resPenyedia, resSwakelola, resStrukturAnggaran] = await Promise.all([
-      axios.get<RupPenyediaRecord[]>(this.urls.penyedia, authConfig),
-      axios.get<RupSwakelolaRecord[]>(this.urls.swakelola, authConfig),
-      axios.get<RupStrukturAnggaranRecord[]>(this.urls.strukturAnggaran, authConfig),
+      axios.get<RupPenyediaRecord[]>(urls.penyedia, authConfig),
+      axios.get<RupSwakelolaRecord[]>(urls.swakelola, authConfig),
+      axios.get<RupStrukturAnggaranRecord[]>(urls.strukturAnggaran, authConfig),
     ]);
 
     const rupPpt: RupPenyediaRecord[] = resPenyedia.data;

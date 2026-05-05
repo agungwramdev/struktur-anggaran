@@ -10,6 +10,7 @@ import { StrukturAnggaranModule } from './struktur-anggaran/struktur-anggaran.mo
 import { LogsModule } from './logs/logs.module';
 import { SatkerModule } from './satker/satker.module';
 import { Rup31MaretModule } from './rup-31-maret/rup-31-maret.module';
+import { KioskModule } from './kiosk/kiosk.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { Rup31MaretModule } from './rup-31-maret/rup-31-maret.module';
     LogsModule,
     SatkerModule,
     Rup31MaretModule,
+    KioskModule,
   ],
   providers: [
     {
